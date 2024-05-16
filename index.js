@@ -24,11 +24,11 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-// Endpoint para el login donde crea y envia el token 
-app.post('/login' && '/', (req, res) => {
-  const { email, password } = req.body;
+// Endpoint para ruta raiz donde crea y envía el token 
+app.post('/', (req, res) => {
+  const { email, contraseña } = req.body;
 
-  if (email === 'admin@admin.com' && password === 'admin') {
+  if (email === 'admin@admin.com' && contraseña === 'admin') {
     const token = jwt.sign({ email: email }, SECRET_KEY, { expiresIn: '1h' });
 
     return res.status(200).json({ token: token });
@@ -37,7 +37,21 @@ app.post('/login' && '/', (req, res) => {
   }
 });
 
-// Endpoint protegido: Profile donde devuelve un usuario x con Nombre, Apellido, Email y Fecha de nacimiento
+// Endpoint para el login donde crea y envía el token 
+app.post('/login', (req, res) => {
+  const { email, contraseña } = req.body;
+
+  if (email === 'admin@admin.com' && contraseña === 'admin') {
+    const token = jwt.sign({ email: email }, SECRET_KEY, { expiresIn: '1h' });
+
+    return res.status(200).json({ token: token });
+  } else {
+    return res.status(401).json({ message: 'Credenciales Invalidas' });
+  }
+});
+
+
+// Endpoint protegido: Profile donde devuelve un usuario x con nombre, apellido, email y fechaDeNacimiento
 app.get('/profile', verifyToken, (req, res) => {
   const userProfile = {
     nombre: 'Pepito',
